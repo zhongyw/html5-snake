@@ -4,11 +4,14 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack  --progress --colors --watch",
+    "start": "webpack-dev-server --progress --hot --colors"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "open-browser-webpack-plugin": "0.0.2",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.15.1"
   }
