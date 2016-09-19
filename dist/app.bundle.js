@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b099bdf91cdad5e41c38"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "f4dbbd5615eec27f42ea"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -570,7 +570,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/dist/";
 
 /******/ 	// __webpack_hash__
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
@@ -583,21 +583,123 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var snakes = __webpack_require__(1);
+	__webpack_require__(1);
+	(function webpackMissingModule() { throw new Error("Cannot find module \"start\""); }());
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var snakes = __webpack_require__(2);
 
 
 	var canvas = document.getElementById("snakeCanvas"),
 		context = canvas.getContext("2d");
-	console.log("context:",context);
+	var resetCanvas= function() {
+			    context.clearRect(0, 0, canvas.width, canvas.height);
+			}
+	var Game = function(){
+		this.snake = new Snake();
+	}
 
-	context.fillStyle = '#999';
-	context.font = (canvas.height) + 'px Impact, sans-serif';
-	context.textAlign = 'center';
-	context.fillText("34", canvas.width / 2, canvas.height * 0.9);
-	console.log(snakes);
+	Game.prototype = {
+		start: function(){
+			this.init();
+		},
+		stop: function(){
+
+		},
+		init: function(){
+			this.loop();
+			var me = this;
+			document.onkeydown = function(e){
+				e = e || window.event;
+				if(e.keyCode == '38'){
+					me.snake.direction = 'top';
+					// up arrow
+				}else if(e.keyCode == '40'){
+					me.snake.direction = 'bottom';
+					//down arrow
+				}else if(e.keyCode == '37'){
+					me.snake.direction = 'left';
+					//left arrow
+				}else if(e.keyCode == '39'){
+					me.snake.direction = 'right';
+				}
+			}
+		},
+		loop: function(){
+			var me = this;
+			var goLoop = function(){
+				me.loop();
+			}
+
+			this.snake.draw();
+			console.log("12312");
+			setTimeout(goLoop, 200);
+		}
+	}
+
+	var Snake = function(){
+		this.direction = "left";
+		this.x = 50;
+		this.y = 50;
+		this.count = 10;
+		this.radius = 10;
+	}
+	Snake.prototype = {
+		draw: function(){
+			resetCanvas();
+			context.fillStyle = '#999';
+			context.beginPath();
+			for(var i = 0; i < this.count; i++){
+				this.polygon(context,4, this.x + i*this.radius, this.y, this.radius, Math.PI/4);
+			}
+			
+			context.fill();
+			context.stroke();
+			if(this.direction === "left"){
+				this.x -= 5;
+			}else if(this.direction === "right"){
+				this.x += 5;
+			}else if(this.direction === "top"){
+				this.y -= 5;
+			}else{
+				this.y += 5;
+			}
+			
+		},
+		move: function(){
+
+		},
+		polygon(c,n,x,y,r,angle,counterclockwise){
+			angle = angle || 0;
+			counterclockwise = counterclockwise || false;
+			c.moveTo(x + r*Math.sin(angle), y - r*Math.cos(angle));
+			var delta = 2*Math.PI/n;
+
+			for(var i = 1; i < n; i++){
+				angle += counterclockwise ? -delta: delta;
+				c.lineTo(x + r*Math.sin(angle), y - r*Math.cos(angle));
+			}
+			c.closePath();
+		}
+	}
+	new Game().start();
+
+
+
+	var requestAnimationFrame = window.requestAnimationFrame ||
+	      window.webkitRequestAnimationFrame ||
+	      window.mozRequestAnimationFrame;
+
+
+
+
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports) {
 
 	var snakes = ['g', 'sss'];
